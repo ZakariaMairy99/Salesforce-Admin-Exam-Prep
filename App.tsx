@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { questions } from './data';
 import { UserAnswers } from './types';
 import { QuestionCard } from './components/QuestionCard';
-import { ChevronLeft, ChevronRight, CheckCircle, RotateCcw, AlertCircle, Award, BookOpen, Target, Clock, ExternalLink, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, RotateCcw, AlertCircle, Award, BookOpen, Target, Clock, ExternalLink, Home, Layers, Workflow, Database, Shield, BarChart3, Settings } from 'lucide-react';
 
 enum AppMode {
   WELCOME = 'WELCOME',
@@ -42,6 +42,55 @@ export default function App() {
       setUserAnswers({});
       setCurrentQuestionIndex(0);
     }
+  };
+
+  const studyHubTopics = [
+    {
+      title: 'Configuration & Setup',
+      description: 'Company settings, profiles & security',
+      icon: Settings,
+      pdfUrl: new URL('./Content/Configuration and Setup.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Object Manager',
+      description: 'Fields, validation rules & relationships',
+      icon: Layers,
+      pdfUrl: new URL('./Content/Object Manager and Lightning App Builder.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Automation',
+      description: 'Flow, Process Builder & approvals',
+      icon: Workflow,
+      pdfUrl: new URL('./Content/Automation.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Data & Analytics',
+      description: 'Reports, dashboards & data hygiene',
+      icon: BarChart3,
+      pdfUrl: new URL('./Content/Data and Analytics Management.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Service & Support',
+      description: 'Cases, queues & customer success',
+      icon: Shield,
+      pdfUrl: new URL('./Content/Service and Support.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Sales & Marketing',
+      description: 'Leads, campaigns & opportunity management',
+      icon: Database,
+      pdfUrl: new URL('./Content/SALES AND MARKETING APPLICATIONS.pdf', import.meta.url).toString(),
+    },
+    {
+      title: 'Agentforce AI',
+      description: 'AI features & intelligent automation',
+      icon: Award,
+      pdfUrl: new URL('./Content/Agentforce AI.pdf', import.meta.url).toString(),
+    },
+  ];
+
+  const handleOpenStudyTopic = (pdfUrl: string) => {
+    window.open(pdfUrl, '_blank', 'noopener,noreferrer');
   };
 
   // Get the actual question object based on mode
@@ -266,6 +315,46 @@ export default function App() {
                 <ChevronRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
               </span>
             </button>
+
+            <div className="mt-12">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-slate-900">Centre de Révision</h2>
+                  <p className="text-slate-500 text-sm md:text-base">Fiches de résumé par topic pour consolider vos acquis.</p>
+                </div>
+                <span className="hidden md:inline-flex items-center gap-2 text-xs font-bold text-sf-blue bg-blue-50 px-3 py-1.5 rounded-full">
+                  Study Hub
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {studyHubTopics.map((topic, index) => (
+                  <button
+                    key={topic.title}
+                    onClick={() => handleOpenStudyTopic(topic.pdfUrl)}
+                    className="text-left group relative p-5 rounded-2xl border border-slate-100 bg-white/80 backdrop-blur-sm shadow-lg shadow-blue-100/30 hover:shadow-xl hover:shadow-blue-200/40 hover:-translate-y-1 transition-all"
+                  >
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="relative z-10 flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center text-sf-blue shadow-inner">
+                        <topic.icon className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-base font-bold text-slate-900">{topic.title}</h3>
+                          <span className="text-[10px] font-bold text-slate-400">#{index + 1}</span>
+                        </div>
+                        <p className="text-sm text-slate-500 mt-1">{topic.description}</p>
+                        <div className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-sf-blue">
+                          Lire le résumé
+                          <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
